@@ -34,4 +34,12 @@ public class EstoqueConvert {
         .total(BigDecimal.ZERO)
         .build();
   }
+
+  public EstoqueResponse convert(Estoque estoque) {
+    return EstoqueResponse.builder()
+        .nome(estoque.getNome())
+        .descricao(estoque.getDescricao())
+        .total(estoque.getTotalProdutos())
+        .build();
+  }
 }

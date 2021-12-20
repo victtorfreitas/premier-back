@@ -1,5 +1,6 @@
 package com.br.premier.service.convert;
 
+import com.br.premier.dto.response.ProdutoPageResponse.RowProduto;
 import com.br.premier.dto.response.ProdutoResponse;
 import com.br.premier.entity.Produto;
 import java.util.HashMap;
@@ -33,5 +34,20 @@ public class ProdutoConvert {
   private static ProdutoResponse keysValuesToProdutoResponse(Entry<String, Long> stringLongEntry) {
     return getProdutoResponse(stringLongEntry.getKey(),
         stringLongEntry.getValue());
+  }
+
+  public List<RowProduto> convertToPage(List<Produto> produtos) {
+    return produtos.stream()
+        .map(ProdutoConvert::toRowProduto)
+        .collect(Collectors.toList());
+  }
+
+  private static RowProduto toRowProduto(Produto produto) {
+    return RowProduto.builder()
+        .imagem(produto.getFoto())
+        .nome(produto.getDescricao())
+        .preco(produto.getPreco())
+        .quantidade(produto.getQuantidade())
+        .build();
   }
 }

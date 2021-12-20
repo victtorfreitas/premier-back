@@ -31,7 +31,7 @@ public class Produto implements Serializable {
   private String descricao;
   @Lob
   @Type(type = "org.hibernate.type.BinaryType")
-  private Byte[] foto;
+  private byte[] foto;
   private BigDecimal preco;
 //  private String tamanho;
 

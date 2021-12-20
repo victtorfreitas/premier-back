@@ -2,6 +2,8 @@ package com.br.premier.service.impl;
 
 import com.br.premier.dto.request.EstoqueRequest;
 import com.br.premier.dto.response.EstoqueResponse;
+import com.br.premier.dto.response.ProdutoPageResponse;
+import com.br.premier.entity.Estoque;
 import com.br.premier.repository.EstoqueRepository;
 import com.br.premier.service.EstoqueService;
 import com.br.premier.service.ProdutoService;
@@ -35,5 +37,16 @@ public class EstoqueServiceImpl implements EstoqueService {
   public void salvar(EstoqueRequest estoqueRequest) {
     val estoque = EstoqueConvert.convert(estoqueRequest);
     estoqueRepository.save(estoque);
+  }
+
+  @Override
+  public EstoqueResponse estoque(Long id) {
+    return EstoqueConvert.convert(estoqueRepository.findById(id)
+        .orElseGet(Estoque.builder()::build));
+  }
+
+  @Override
+  public ProdutoPageResponse produtosByEstoque(Long idEstoque, Integer page) {
+    return produtoService.getProdutosByEstoque(idEstoque, page);
   }
 }
