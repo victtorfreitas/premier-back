@@ -1,8 +1,11 @@
 package com.br.premier.service.convert;
 
+import com.br.premier.dto.response.ProdutoEstoqueResponse;
 import com.br.premier.dto.response.ProdutoPageResponse.RowProduto;
 import com.br.premier.dto.response.ProdutoResponse;
 import com.br.premier.entity.Produto;
+import com.br.premier.entity.Tipo;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +16,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ProdutoConvert {
 
-  public List<ProdutoResponse> convert(List<Produto> produtos) {
+  public List<ProdutoEstoqueResponse> convert(List<Produto> produtos) {
     Map<String, Long> somatoriaTipo = new HashMap<>();
     produtos.forEach(
         produto -> somatoriaTipo.merge(produto.getTipo().getNome(),
@@ -24,14 +27,15 @@ public class ProdutoConvert {
         .collect(Collectors.toList());
   }
 
-  private ProdutoResponse getProdutoResponse(String tipo, Long quantidade) {
-    return ProdutoResponse.builder()
+  private ProdutoEstoqueResponse getProdutoResponse(String tipo, Long quantidade) {
+    return ProdutoEstoqueResponse.builder()
         .tipoProduto(tipo)
         .quantidade(quantidade)
         .build();
   }
 
-  private static ProdutoResponse keysValuesToProdutoResponse(Entry<String, Long> stringLongEntry) {
+  private static ProdutoEstoqueResponse keysValuesToProdutoResponse(
+      Entry<String, Long> stringLongEntry) {
     return getProdutoResponse(stringLongEntry.getKey(),
         stringLongEntry.getValue());
   }
@@ -44,10 +48,31 @@ public class ProdutoConvert {
 
   private static RowProduto toRowProduto(Produto produto) {
     return RowProduto.builder()
+        .id(produto.getId())
         .imagem(produto.getFoto())
         .nome(produto.getDescricao())
         .preco(produto.getPreco())
         .quantidade(produto.getQuantidade())
         .build();
+  }
+
+  public ProdutoResponse convert(Produto produto) {
+    Tipo tipo = produto.getTipo();
+    List<String> tags = getTags(produto.getTags());
+    return ProdutoResponse.builder()
+        .descricao(produto.getDescricao())
+        .quantidade(produto.getQuantidade())
+        .foto(produto.getFoto())
+        .tipo(tipo.getId())
+        .preco(produto.getPreco())
+        .tags(tags)
+        .build();
+  }
+
+  private static List<String> getTags(String tags) {
+    if (tags == null) {
+      return new ArrayList<>();
+    }
+    return List.of(tags.split(","));
   }
 }

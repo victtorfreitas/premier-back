@@ -33,6 +33,7 @@ public class Produto implements Serializable {
   @Type(type = "org.hibernate.type.BinaryType")
   private byte[] foto;
   private BigDecimal preco;
+  private String tags;
 //  private String tamanho;
 
   @ManyToOne
@@ -41,4 +42,15 @@ public class Produto implements Serializable {
 
   @ManyToOne
   private Tipo tipo;
+
+  public String getFoto() {
+    if (foto != null) {
+      return new String(foto);
+    }
+    return "";
+  }
+
+  public byte[] getFotoBytes() {
+    return foto;
+  }
 }

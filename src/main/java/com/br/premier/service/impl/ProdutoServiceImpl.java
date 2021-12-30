@@ -1,7 +1,9 @@
 package com.br.premier.service.impl;
 
+import com.br.premier.dto.request.ProdutoRequest;
 import com.br.premier.dto.response.ProdutoPageResponse;
 import com.br.premier.dto.response.ProdutoPageResponse.Row;
+import com.br.premier.dto.response.ProdutoResponse;
 import com.br.premier.dto.response.TipoResponse;
 import com.br.premier.entity.Produto;
 import com.br.premier.entity.Tipo;
@@ -13,6 +15,7 @@ import com.br.premier.service.convert.TipoConvert;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.val;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -61,6 +64,39 @@ public class ProdutoServiceImpl implements ProdutoService {
         .row(getRow(produtos))
         .loadMore(false)
         .build();
+  }
+
+  @Override
+  public ProdutoResponse getBy(Long id) throws NotFoundException {
+    Produto produto = getProduto(id);
+    return ProdutoConvert.convert(produto);
+  }
+
+  private Produto getProduto(Long id) throws NotFoundException {
+    return produtoRepository.findById(id)
+        .orElseThrow(NotFoundException::new);
+  }
+
+  @Override
+  public void update(Long id, ProdutoRequest produtoRequest) throws NotFoundException {
+    Produto produto = getProduto(id);
+    metch(produto, produtoRequest);
+    produtoRepository.save(produto);
+  }
+
+  private void metch(Produto produto, ProdutoRequest produtoRequest) throws NotFoundException {
+    String tags = String.join(",", produtoRequest.getTags()).toUpperCase();
+    produto.setDescricao(produtoRequest.getNome());
+    produto.setFoto(produtoRequest.getFoto().getBytes());
+    produto.setPreco(produtoRequest.getPreco());
+    produto.setQuantidade(produtoRequest.getQuantidade());
+    produto.setTags(tags);
+    produto.setTipo(getTipo(produtoRequest.getCategoriaId()));
+  }
+
+  private Tipo getTipo(Long estoqueId) throws NotFoundException {
+    return tipoRepository.findById(estoqueId)
+        .orElseThrow(NotFoundException::new);
   }
 
   private Row getRow(List<Produto> produtos) {

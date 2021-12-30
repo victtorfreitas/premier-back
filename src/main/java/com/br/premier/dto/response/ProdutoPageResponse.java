@@ -32,7 +32,8 @@ public class ProdutoPageResponse {
   @AllArgsConstructor
   public static class RowProduto {
 
-    private byte[] imagem;
+    private Long id;
+    private String imagem;
     private String nome;
     private BigDecimal preco;
     private Long quantidade;

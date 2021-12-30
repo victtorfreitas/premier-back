@@ -13,5 +13,5 @@ public class EstoqueResponse {
   private String nome;
   private String descricao;
   private BigDecimal total;
-  private List<ProdutoResponse> produtos;
+  private List<ProdutoEstoqueResponse> produtos;
 }

@@ -1,5 +1,6 @@
 package com.br.premier.service.convert;
 
+import com.br.premier.dto.response.CategoriaResponse;
 import com.br.premier.dto.response.TipoResponse;
 import com.br.premier.entity.Produto;
 import com.br.premier.entity.Tipo;
@@ -34,6 +35,20 @@ public class TipoConvert {
 
   private TipoResponse getTipoResponse(Tipo tipo) {
     return TipoResponse.builder()
+        .nome(tipo.getNome())
+        .nomePlural(tipo.getNomePlural())
+        .build();
+  }
+
+  public static List<CategoriaResponse> convertToResponse(List<Tipo> tipos) {
+    return tipos.stream()
+        .map(TipoConvert::convertCategoriaResponse)
+        .collect(Collectors.toList());
+  }
+
+  private static CategoriaResponse convertCategoriaResponse(Tipo tipo) {
+    return CategoriaResponse.builder()
+        .id(tipo.getId())
         .nome(tipo.getNome())
         .nomePlural(tipo.getNomePlural())
         .build();
