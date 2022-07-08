@@ -13,5 +13,6 @@ public interface EstoqueService {
 
   EstoqueResponse estoque(Long id);
 
-  ProdutoPageResponse produtosByEstoque(Long idEstoque, Integer page);
+  ProdutoPageResponse produtosByEstoque(Long idEstoque, Integer page, String tags,
+      Long categoriaId);
 }

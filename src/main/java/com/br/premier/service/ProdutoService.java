@@ -16,7 +16,8 @@ public interface ProdutoService {
 
   List<Produto> getProdutosEmpty();
 
-  ProdutoPageResponse getProdutosByEstoque(Long idEstoque, Integer page);
+  ProdutoPageResponse getProdutosByEstoque(Long idEstoque, Integer page, String tags,
+      Long categoriaId);
 
   ProdutoResponse getBy(Long id) throws NotFoundException;
 

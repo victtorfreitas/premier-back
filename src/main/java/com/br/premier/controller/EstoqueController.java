@@ -35,8 +35,11 @@ public class EstoqueController {
   }
 
   @GetMapping("{id}/produto")
-  public ProdutoPageResponse produtos(@PathVariable Long id, @RequestParam Integer page) {
-    return estoqueService.produtosByEstoque(id, page);
+  public ProdutoPageResponse produtos(@PathVariable Long id,
+      @RequestParam Integer page,
+      @RequestParam(required = false, defaultValue = "") String tags,
+      Long categoriaId) {
+    return estoqueService.produtosByEstoque(id, page, tags, categoriaId);
   }
 
   @PostMapping

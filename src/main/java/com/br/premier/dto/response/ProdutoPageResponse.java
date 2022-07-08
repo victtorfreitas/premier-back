@@ -18,6 +18,7 @@ public class ProdutoPageResponse {
   @Singular
   private List<Row> rows;
   private boolean loadMore;
+  private Integer qtdProduto;
 
   @Getter
   @Builder

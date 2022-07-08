@@ -41,7 +41,7 @@ public class ProdutoController {
   }
 
   @SneakyThrows
-  @PostMapping("/{id}")
+  @PostMapping("/{id}") // TODO: 19/05/2022 Mudar para PUT
   public void update(@PathVariable Long id,
       @RequestBody ProdutoRequest produto) {
     produtoService.update(id, produto);

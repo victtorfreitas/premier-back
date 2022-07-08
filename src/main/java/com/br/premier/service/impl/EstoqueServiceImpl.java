@@ -46,7 +46,8 @@ public class EstoqueServiceImpl implements EstoqueService {
   }
 
   @Override
-  public ProdutoPageResponse produtosByEstoque(Long idEstoque, Integer page) {
-    return produtoService.getProdutosByEstoque(idEstoque, page);
+  public ProdutoPageResponse produtosByEstoque(Long idEstoque, Integer page, String tags,
+      Long categoriaId) {
+    return produtoService.getProdutosByEstoque(idEstoque, page, tags, categoriaId);
   }
 }
